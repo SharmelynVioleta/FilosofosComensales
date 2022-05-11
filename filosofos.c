@@ -6,6 +6,7 @@
 void *filosofo(void *arg);
 int numFilosofos;
 int comida = 3500;
+int estomagos[];
 int comio = 0;
 int comidaRestaurada = 2;
 
@@ -65,12 +66,17 @@ void comiendo(int arg)
     cogiendoTenedor(arg, t2);
     printf("FILÓSOFO %d ESTA COMIENDO \n", arg);
     comida = comida - 50;
+    estomagos[arg] += 50;
 
     if (comida == 0 && comidaRestaurada > 0)
     {
         comida = 3500;
         printf("YEY,COMIDA RESTAURADA \n");
     }
+
+    printf("Verificando el estomago del filosofo %d: %d ... \n", arg, estomagos[arg]);
+    printf("Cantidad de comida que queda: %d ... \n", comida);
+    soltarTenedor(t1, t2);
 }
 void *filosofo(void *arg)
 {
