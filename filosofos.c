@@ -3,10 +3,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int numFilosofos;
-
 void *filosofo(void *arg);
-int var = 0;
+int numFilosofos;
+int comida = 3500;
 
 pthread_mutex_t tenedor[5];
 
@@ -67,9 +66,8 @@ void comiendo(int arg)
 void *filosofo(void *arg)
 {
     int arg2 = *((int *)arg);
-    for (int i = 1; i <= 5; i++)
+    while (comida > 0)
     {
-        var = var + 1;
         comiendo(arg2);
     }
     return NULL;
