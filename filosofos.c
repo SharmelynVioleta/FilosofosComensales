@@ -6,6 +6,8 @@
 void *filosofo(void *arg);
 int numFilosofos;
 int comida = 3500;
+int comio = 0;
+int comidaRestaurada = 2;
 
 pthread_mutex_t tenedor[5];
 
@@ -62,6 +64,13 @@ void comiendo(int arg)
     cogiendoTenedor(arg, t1);
     cogiendoTenedor(arg, t2);
     printf("FILÓSOFO %d ESTA COMIENDO \n", arg);
+    comida = comida - 50;
+
+    if (comida == 0 && comidaRestaurada > 0)
+    {
+        comida = 3500;
+        printf("YEY,COMIDA RESTAURADA \n");
+    }
 }
 void *filosofo(void *arg)
 {
