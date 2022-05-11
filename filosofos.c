@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define numFilosofos 5
+int numFilosofos;
 
 void *filosofo(void *arg);
 int var = 0;
@@ -14,6 +14,8 @@ int main(void)
 {
     printf("Iniciando programa de filosofos COmensales\n");
     printf("\tFILÓSOFOS:\n");
+    printf("Ingrese el numero de filosofos: ");
+    scanf("%d", &numFilosofos);
     pthread_t filosofos[numFilosofos];
     int id[numFilosofos];
     int i;
