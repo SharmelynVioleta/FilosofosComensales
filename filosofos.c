@@ -50,6 +50,11 @@ void soltarTenedor(int s1, int s2)
     pthread_mutex_unlock(&tenedor[s2]);
 }
 
+void piensa(int n)
+{
+    printf("Al Filosofo %d se le envio a pensar\n,", n);
+}
+
 void comiendo(int arg)
 {
     int t1 = arg - 1;
@@ -78,6 +83,7 @@ void comiendo(int arg)
     printf("Cantidad de comida que queda: %d ... \n", comida);
     soltarTenedor(t1, t2);
 }
+
 void *filosofo(void *arg)
 {
     int arg2 = *((int *)arg);
