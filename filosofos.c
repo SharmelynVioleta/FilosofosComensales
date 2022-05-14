@@ -53,16 +53,22 @@ void soltarTenedor(int s1, int s2)
 void piensa(int n)
 {
     printf("Al Filosofo %d se le envio a pensar\n,", n);
+
+    int aleatorio = rand() % 10;
+    sleep(aleatorio);
 }
 
 void comiendo(int arg)
 {
-    int t1 = arg - 1;
-    int t2 = arg - 2;
-    if (t2 == -1)
+    int t1 = arg - 2;
+    int t2 = arg - 1;
+
+    if (t1 == -1)
     {
-        t2 = 4;
+        t1 = t2;
+        t2 = numFilosofos - 1;
     }
+
     if (arg == 1)
     {
         sleep(2);
@@ -89,6 +95,7 @@ void *filosofo(void *arg)
     int arg2 = *((int *)arg);
     while (comida > 0)
     {
+        piensa(arg2);
         comiendo(arg2);
     }
     return NULL;
