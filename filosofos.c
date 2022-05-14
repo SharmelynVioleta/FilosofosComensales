@@ -73,14 +73,18 @@ void comiendo(int arg)
     {
         sleep(2);
     }
+
     cogiendoTenedor(arg, t1);
     cogiendoTenedor(arg, t2);
+
     printf("FILÓSOFO %d ESTA COMIENDO \n", arg);
     comida = comida - 50;
     estomagos[arg] += 50;
+    comio += 50;
 
     if (comida == 0 && comidaRestaurada > 0)
     {
+        printf("TOTAL COMIDA EN ESTOMAGOS %d ... \n", comio);
         comida = 3500;
         printf("YEY,COMIDA RESTAURADA \n");
     }
