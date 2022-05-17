@@ -9,8 +9,9 @@ int comida = 3500;
 int estomagos[];
 int comio = 0;
 int comidaRestaurada = 2;
+int derrochandoEnergia = 0;
 
-pthread_mutex_t tenedor[5];
+pthread_mutex_t cucharas[];
 
 int main(void)
 {
@@ -24,7 +25,7 @@ int main(void)
 
     for (int i = 0; i < numFilosofos; i++)
     {
-        pthread_mutex_init(&tenedor[i], NULL);
+        pthread_mutex_init(&cucharas[i], NULL);
     }
     for (int i = 0; i < numFilosofos; i++)
     {
@@ -38,25 +39,36 @@ int main(void)
 
     return 0;
 }
-void cogiendoTenedor(int a, int b)
+
+// El filosofo coge el tenedor, esta funcion obtiene el Nro del filosofo y el tenedor
+
+void cogiendocucharas(int a, int b)
 {
-    pthread_mutex_lock(&tenedor[b]);
-    printf("El filósofo número %d está usando el tenedor %d \n", a, b);
+    pthread_mutex_lock(&cucharas[b]);
+    printf("El filósofo número %d está usando el cucharas %d \n", a, b);
 }
 
-void soltarTenedor(int s1, int s2)
+// El filosofo suelta el tenedor, esta funcion obtiene el numero del tenedor a dejar
+
+void soltarcucharas(int s1, int s2)
 {
-    pthread_mutex_unlock(&tenedor[s1]);
-    pthread_mutex_unlock(&tenedor[s2]);
+    pthread_mutex_unlock(&cucharas[s1]);
+    pthread_mutex_unlock(&cucharas[s2]);
 }
+
+// El filosofo piensa, esta funcion manda a pensar al filosofo
 
 void piensa(int n)
 {
     printf("Al Filosofo %d se le envio a pensar\n,", n);
-
+    estomagos[n] -= 10;
+    comio -= 10;
+    derrochandoEnergia += 10;
     int aleatorio = rand() % 10;
     sleep(aleatorio);
 }
+
+// En esta función se halla la sección crítica
 
 void comiendo(int arg)
 {
@@ -69,29 +81,36 @@ void comiendo(int arg)
         t2 = numFilosofos - 1;
     }
 
+    // Arreglando el deadlock
+
     if (arg == 1)
     {
         sleep(2);
     }
 
-    cogiendoTenedor(arg, t1);
-    cogiendoTenedor(arg, t2);
+    cogiendocucharas(arg, t1);
+    cogiendocucharas(arg, t2);
 
     printf("FILÓSOFO %d ESTA COMIENDO \n", arg);
-    comida = comida - 50;
-    estomagos[arg] += 50;
-    comio += 50;
+    comida = comida - 250;
+    estomagos[arg] += 250;
+    comio += 2500;
+
+    // Se verifica si los recursos deben restaurarse
 
     if (comida == 0 && comidaRestaurada > 0)
     {
         printf("TOTAL COMIDA EN ESTOMAGOS %d ... \n", comio);
+        printf("TOTAL DE ENERGIA DERROCHADA %d ...\n", derrochandoEnergia);
+        printf("LA CANTIDAD QUE SE COMIO %d ...\n", comio + derrochandoEnergia);
+
         comida = 3500;
         printf("YEY,COMIDA RESTAURADA \n");
     }
 
     printf("Verificando el estomago del filosofo %d: %d ... \n", arg, estomagos[arg]);
     printf("Cantidad de comida que queda: %d ... \n", comida);
-    soltarTenedor(t1, t2);
+    soltarcucharas(t1, t2);
 }
 
 void *filosofo(void *arg)
